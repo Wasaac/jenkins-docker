@@ -2,5 +2,7 @@
 
 cd $(dirname $0)
 build_date=$(date +%Y%m%d-%H%M%S)
-docker build -t localhost:5000/jenkins-docker --build-arg "BUILD_DATE=$build_date" .
+jenkins_ver=jdk11
+docker build -t localhost:5000/jenkins-docker --build-arg "BUILD_DATE=$build_date" \
+       --build-arg "JENKINS_VER=$jenkins_ver" .
 
