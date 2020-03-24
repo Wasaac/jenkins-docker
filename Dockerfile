@@ -2,9 +2,6 @@ ARG JENKINS_VER=lts
 ARG JENKINS_REGISTRY=jenkins/jenkins
 FROM ${JENKINS_REGISTRY}:${JENKINS_VER}
 
-COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
-
 # switch to root, let the entrypoint drop back to jenkins
 USER root
 
@@ -47,6 +44,15 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
 # entrypoint is used to update docker gid and revert back to jenkins user
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+USER jenkins
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+
+COPY jenkins_config /var/jenkins_home/jenkins_config
+ENV CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins_config
+USER root
+
 ENTRYPOINT ["/entrypoint.sh"]
 HEALTHCHECK CMD curl -sSLf http://localhost:8080/login >/dev/null || exit 1
 
