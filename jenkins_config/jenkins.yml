@@ -1,7 +1,6 @@
 jenkins:
   agentProtocols:
   - "JNLP4-connect"
-  - "Ping"
   clouds:
   - docker:
       dockerApi:
@@ -16,30 +15,14 @@ jenkins:
     sites:
     - id: "default"
       url: "https://updates.jenkins-ci.org/update-center.json"
+
+unclassified:
   location:
     url: "http://192.168.33.5/"
   pipeline-model-docker:
     dockerLabel: "docker"
+
 tool:
-  ansibleInstallation:
-    installations:
-    - name: "ansible-2.9"
-      properties:
-      - installSource:
-          installers:
-          - command:
-              command: |-
-                python -m virtualenv ansible-2.9/
-                ansible-2.9/bin/pip install ansible==2.9.1
-              toolHome: "ansible-2.9/bin"
-  dockerTool:
-    installations:
-    - name: "Default"
-      properties:
-      - installSource:
-          installers:
-          - docker:
-              version: "latest"
   git:
     installations:
     - home: "git"
