@@ -27,6 +27,12 @@ if [ "$(id -u)" = "0" ]; then
   if ! groups jenkins | grep -q docker; then
     usermod -aG docker jenkins
   fi
+
+  # Ensure jenkins home directory is owned by jenkins user
+  if [ -d /var/jenkins_home ]; then
+    chown -R jenkins:jenkins /var/jenkins_home
+  fi
+
   # Add call to gosu to drop from root user to jenkins user
   # when running original entrypoint
   set -- gosu jenkins "$@"

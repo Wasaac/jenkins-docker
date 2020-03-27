@@ -41,6 +41,8 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
  && groupadd -r docker \
  && usermod -aG docker jenkins
 
+VOLUME /var/jenkins_home
+WORKDIR /var/jenkins_home
 # entrypoint is used to update docker gid and revert back to jenkins user
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
